@@ -1,0 +1,28 @@
+{"frames": {
+
+"HuntingRifle_NormalState.png":
+{
+	"frame": {"x":0,"y":0,"w":156,"h":40},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":156,"h":40},
+	"sourceSize": {"w":156,"h":40}
+},
+"HuntingRifle_ReloadingState.png":
+{
+	"frame": {"x":156,"y":0,"w":156,"h":40},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":156,"h":40},
+	"sourceSize": {"w":156,"h":40}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "HuntingRifle.png",
+	"format": "RGBA8888",
+	"size": {"w":312,"h":40},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:12e22f9fb4176edec8ee54b9c8d2877c:40d11f061d823585183d1fdd923705c2:a8cc19d6b3e3876cff5dd343e92d5a6a$"
+}
+}
