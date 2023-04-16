@@ -9,7 +9,7 @@ namespace GunTest.Mac10
 {
     sealed class Mac10Abstract : AbstractPhysicalObject
     {
-        public Mac10Abstract(World world, WorldCoordinate pos, EntityID ID) : base(world, Mac10Fisobs.AbstrRevolver, null, pos, ID)
+        public Mac10Abstract(World world, WorldCoordinate pos, EntityID ID) : base(world, Mac10Fisobs.AbstrMac10, null, pos, ID)
         {
         }
 

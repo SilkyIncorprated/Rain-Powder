@@ -1,8 +1,8 @@
 {
   "Title": "Rain Powder",
-  "Description": "Not actual rain, its actually a gun!\r\n\r\nthanks to b1g ideas shoe from the RW discord for drawing the thumbnail!\r\n\r\nNOTE: guns do not spawn naturally\r\nuse dev console to spawn them in lol",
+  "Description": "Not actual rain, its actually a gun!\r\n\r\nthanks to b1g ideas shoe from the RW discord for drawing the last thumbnail! (sorry)\r\n\r\nNOTE: guns do not spawn naturally\r\nuse dev console to spawn them in lol\r\n\r\nteh new update:\r\n-Mac10, a fast firing gun that hold 30 ammo and uses rocks to refill\r\n-Gun system overhaul, now it should be much easier to add guns to this mod",
   "ID": "silky.gunworld",
-  "Version": "0.1.0",
+  "Version": "0.2.0",
   "TargetGameVersion": "v1.9.06",
   "Requirements": "fisobs",
   "RequirementNames": "Fisobs",

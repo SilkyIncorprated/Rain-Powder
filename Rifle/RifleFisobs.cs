@@ -18,7 +18,7 @@ namespace GunTest.Rifle
 
         public RifleFisobs() : base(AbstrRifle)
         {
-            Icon = new SimpleIcon(spriteName: "Spear", spriteColor: Color.white);
+            Icon = new SimpleIcon(spriteName: "Symbol_HellSpear", spriteColor: Color.white);
 
             SandboxPerformanceCost = new SandboxPerformanceCost(linear: 0.2f, 0f);
 

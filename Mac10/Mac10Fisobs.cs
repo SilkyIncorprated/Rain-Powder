@@ -13,16 +13,16 @@ namespace GunTest.Mac10
 {
     sealed class Mac10Fisobs : Fisob
     {
-        public static readonly AbstractPhysicalObject.AbstractObjectType AbstrRevolver = new AbstractPhysicalObject.AbstractObjectType("Revolver", true);
-        public static readonly MultiplayerUnlocks.SandboxUnlockID mRevolver = new MultiplayerUnlocks.SandboxUnlockID("Revolver", true);
+        public static readonly AbstractPhysicalObject.AbstractObjectType AbstrMac10 = new AbstractPhysicalObject.AbstractObjectType("Mac10", true);
+        public static readonly MultiplayerUnlocks.SandboxUnlockID mMac10 = new MultiplayerUnlocks.SandboxUnlockID("Mac10", true);
 
-        public Mac10Fisobs() : base(AbstrRevolver)
+        public Mac10Fisobs() : base(AbstrMac10)
         {
-            Icon = new SimpleIcon(spriteName: "Spear", spriteColor: Color.white);
+            Icon = new SimpleIcon(spriteName: "Symbol_HellSpear", spriteColor: Color.white);
 
             SandboxPerformanceCost = new SandboxPerformanceCost(linear: 0.2f, 0f);
 
-            RegisterUnlock(mRevolver, parent: MultiplayerUnlocks.SandboxUnlockID.GreenLizard, data: 0);
+            RegisterUnlock(mMac10, parent: MultiplayerUnlocks.SandboxUnlockID.GreenLizard, data: 0);
         }
 
         public override AbstractPhysicalObject Parse(World world, EntitySaveData saveData, SandboxUnlock unlock)
