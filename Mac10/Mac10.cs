@@ -13,32 +13,35 @@ using RWCustom;
 using MonoMod;
 using Fisobs;
 
-namespace GunTest.RevolverStuff
+namespace GunTest.Mac10
 {
-    class Revolver : GunClass
+    class Mac10 : GunClass
     {
 
         public override bool HeavyWeapon => false;
 
-        public RevolverAbstract abstractGun
+        public Mac10Abstract abstractGun
         {
             get
             {
-                return this.abstractPhysicalObject as RevolverAbstract;
+                return this.abstractPhysicalObject as Mac10Abstract;
             }
         }
 
-        public Revolver(RevolverAbstract abstr, World world) : base(abstr, world)
+        public Mac10(Mac10Abstract abstr, World world) : base(abstr, world)
         {
 
-            this.Maxammo = 6;
-            this.ammo = 6;
-            this.recoil = 13.5f;
-            this.reloadTime = 2f;
-            this.bulletdamage = 1.5f;
+            this.Maxammo = 30;
+            this.ammo = 30;
+            this.recoil = 14.5f;
+            this.reloadTime = 2.25f;
+            this.bulletdamage = 1f;
             this.twohanded = false;
-            this.recoilpunishamount = 0.9f;
-            this.RPM = 475;
+            this.recoilpunishamount = 0.45f;
+            this.spread = .05f;
+            this.auto = true;
+            this.sprSize = 2.5f;
+            this.RPM = 950;
 
         }
 
@@ -46,7 +49,7 @@ namespace GunTest.RevolverStuff
         {
             sLeaser.sprites = new FSprite[1 + this.Maxammo];
 
-            sLeaser.sprites[0] = new FSprite("Revolver_NormalState");
+            sLeaser.sprites[0] = new FSprite("Mac10");
 
             for (int x = 1; x < sLeaser.sprites.Length; x++)
             {

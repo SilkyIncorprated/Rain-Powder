@@ -9,20 +9,15 @@ using Fisobs.Properties;
 using Fisobs.Sandbox;
 using UnityEngine;
 
-namespace GunTest.Shotgun
+namespace GunTest.BulletProjectile
 {
-    sealed class ShotgunFisobs : Fisob
+    sealed class BulletProjectileFisobs : Fisob
     {
-        public static readonly AbstractPhysicalObject.AbstractObjectType AbstrShotgun = new AbstractPhysicalObject.AbstractObjectType("Shotgun", true);
-        public static readonly MultiplayerUnlocks.SandboxUnlockID mShotgun = new MultiplayerUnlocks.SandboxUnlockID("Shotgun", true);
+        public static readonly AbstractPhysicalObject.AbstractObjectType AbstrBulletProjectile = new AbstractPhysicalObject.AbstractObjectType("BulletProjectile", true);
 
-        public ShotgunFisobs() : base(AbstrShotgun)
+        public BulletProjectileFisobs() : base(AbstrBulletProjectile)
         {
             Icon = new SimpleIcon(spriteName: "Spear", spriteColor: Color.white);
-
-            SandboxPerformanceCost = new SandboxPerformanceCost(linear: 0.2f, 0f);
-
-            RegisterUnlock(mShotgun, parent: MultiplayerUnlocks.SandboxUnlockID.GreenLizard, data: 0);
         }
 
         public override AbstractPhysicalObject Parse(World world, EntitySaveData saveData, SandboxUnlock unlock)
@@ -35,7 +30,7 @@ namespace GunTest.Shotgun
                 p = new string[5];
             }
 
-            var result = new ShotgunAbstract(world, saveData.Pos, saveData.ID)
+            var result = new BulletProjectileAbstract(world, saveData.Pos, saveData.ID)
             {
             };
 

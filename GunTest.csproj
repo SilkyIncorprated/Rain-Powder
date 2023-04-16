@@ -72,12 +72,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BulletObject\BulletProjectileAbstract.cs" />
+    <Compile Include="GunClass.cs" />
+    <Compile Include="Mac10\Mac10.cs" />
+    <Compile Include="Mac10\Mac10Abstract.cs" />
+    <Compile Include="Mac10\Mac10Fisobs.cs" />
+    <Compile Include="Mac10\Mac10Propteries.cs" />
     <Compile Include="Revolver\RevolverAbstract.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Revolver\Revolver.cs" />
     <Compile Include="Revolver\RevolverFisobs.cs" />
     <Compile Include="Revolver\RevolverPropteries.cs" />
+    <Compile Include="BulletObject\BulletProjectile.cs" />
+    <Compile Include="BulletObject\BulletProjectileFisobs.cs" />
+    <Compile Include="BulletObject\BulletProjectilePropteries.cs" />
     <Compile Include="Shotgun\Shotgun.cs" />
     <Compile Include="Shotgun\ShotgunAbstract.cs" />
     <Compile Include="Shotgun\ShotgunFisobs.cs" />

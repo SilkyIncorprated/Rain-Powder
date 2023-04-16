@@ -9,20 +9,20 @@ using Fisobs.Properties;
 using Fisobs.Sandbox;
 using UnityEngine;
 
-namespace GunTest.Shotgun
+namespace GunTest.Mac10
 {
-    sealed class ShotgunFisobs : Fisob
+    sealed class Mac10Fisobs : Fisob
     {
-        public static readonly AbstractPhysicalObject.AbstractObjectType AbstrShotgun = new AbstractPhysicalObject.AbstractObjectType("Shotgun", true);
-        public static readonly MultiplayerUnlocks.SandboxUnlockID mShotgun = new MultiplayerUnlocks.SandboxUnlockID("Shotgun", true);
+        public static readonly AbstractPhysicalObject.AbstractObjectType AbstrRevolver = new AbstractPhysicalObject.AbstractObjectType("Revolver", true);
+        public static readonly MultiplayerUnlocks.SandboxUnlockID mRevolver = new MultiplayerUnlocks.SandboxUnlockID("Revolver", true);
 
-        public ShotgunFisobs() : base(AbstrShotgun)
+        public Mac10Fisobs() : base(AbstrRevolver)
         {
             Icon = new SimpleIcon(spriteName: "Spear", spriteColor: Color.white);
 
             SandboxPerformanceCost = new SandboxPerformanceCost(linear: 0.2f, 0f);
 
-            RegisterUnlock(mShotgun, parent: MultiplayerUnlocks.SandboxUnlockID.GreenLizard, data: 0);
+            RegisterUnlock(mRevolver, parent: MultiplayerUnlocks.SandboxUnlockID.GreenLizard, data: 0);
         }
 
         public override AbstractPhysicalObject Parse(World world, EntitySaveData saveData, SandboxUnlock unlock)
@@ -35,7 +35,7 @@ namespace GunTest.Shotgun
                 p = new string[5];
             }
 
-            var result = new ShotgunAbstract(world, saveData.Pos, saveData.ID)
+            var result = new Mac10Abstract(world, saveData.Pos, saveData.ID)
             {
             };
 

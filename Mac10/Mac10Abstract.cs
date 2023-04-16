@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Fisobs.Core;
 
-namespace GunTest.Shotgun
+namespace GunTest.Mac10
 {
-    sealed class ShotgunAbstract : AbstractPhysicalObject
+    sealed class Mac10Abstract : AbstractPhysicalObject
     {
-        public ShotgunAbstract(World world, WorldCoordinate pos, EntityID ID) : base(world, ShotgunFisobs.AbstrShotgun, null, pos, ID)
+        public Mac10Abstract(World world, WorldCoordinate pos, EntityID ID) : base(world, Mac10Fisobs.AbstrRevolver, null, pos, ID)
         {
         }
 
@@ -17,7 +17,7 @@ namespace GunTest.Shotgun
         {
             base.Realize();
             if (realizedObject == null)
-                realizedObject = new Shotgun(this, world);
+                realizedObject = new Mac10(this, world);
         }
 
     }
