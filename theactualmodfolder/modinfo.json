@@ -1,0 +1,9 @@
+{
+	"id": "silky.gunworld",
+	"name": "Rain Powder",
+	"authors": "Silky",
+	"description": "Not actual rain, its actually a revolver!",
+	"requirements": [ "fisobs" ],
+	"requirements_names": [ "Fisobs" ],
+	"checksum_override_version": true
+}

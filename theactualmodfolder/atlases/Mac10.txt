@@ -1,0 +1,20 @@
+{"frames": {
+
+"Mac10.png":
+{
+	"frame": {"x":0,"y":0,"w":94,"h":86},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":86},
+	"sourceSize": {"w":94,"h":86}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Mac10.png",
+	"format": "RGBA8888",
+	"size": {"w":94,"h":86},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:cda348aabc5f89bf798bb8992d38ef84:33c5ddd9fb5f2897b817f6bf5d19466a:c3be8567e99a894d316c1fa78c4e1729$"
+}
+}

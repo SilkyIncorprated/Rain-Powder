@@ -1,0 +1,20 @@
+{"frames": {
+
+"Shotgun_NormalState.png":
+{
+	"frame": {"x":0,"y":0,"w":162,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":162,"h":36},
+	"sourceSize": {"w":162,"h":36}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Shotgun.png",
+	"format": "RGBA8888",
+	"size": {"w":162,"h":36},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:a8bb7587f03879abc100787b46d2b1c9:569b3f9c0624b10b4db8381b2adda143:c5965e283f8b5b0659df0ecbdd90f51b$"
+}
+}

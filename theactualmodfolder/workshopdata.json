@@ -1,0 +1,16 @@
+{
+  "Title": "Rain Powder",
+  "Description": "Not actual rain, its actually a gun!\r\n\r\nthanks to b1g ideas shoe from the RW discord for drawing the thumbnail!\r\n\r\nNOTE: guns do not spawn naturally\r\nuse dev console to spawn them in lol",
+  "ID": "silky.gunworld",
+  "Version": "0.1.0",
+  "TargetGameVersion": "v1.9.06",
+  "Requirements": "fisobs",
+  "RequirementNames": "Fisobs",
+  "Authors": "Silky",
+  "Visibility": "Public",
+  "Tags": [
+    "Items"
+  ],
+  "WorkshopID": 2962900185,
+  "UploadFilesOnly": false
+}
