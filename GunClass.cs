@@ -77,7 +77,7 @@ namespace GunTest
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-            sLeaser.sprites = new FSprite[1 + this.Maxammo];
+            sLeaser.sprites = new FSprite[this.RealSprites + this.Maxammo];
 
             sLeaser.sprites[0] = new FSprite("Shotgun_NormalState");
 
@@ -98,7 +98,7 @@ namespace GunTest
             gunspr.SetPosition(Vector2.Lerp(bodyChunks[0].lastPos, bodyChunks[0].pos, timeStacker) - camPos);
             //gunspr.anchorX = 1f/100000;
             gunspr.scale = size;
-            for (int i = 1; i < sLeaser.sprites.Length; i++)
+            for (int i = this.RealSprites; i < sLeaser.sprites.Length; i++)
             {
                 var spr = sLeaser.sprites[i];
 
@@ -171,15 +171,39 @@ namespace GunTest
             if (this.grabbedBy.Count > 0)
             {
 
-                Vector2 vector = new Vector2(Input.mousePosition.x + this.room.game.cameras[0].pos.x, Input.mousePosition.y + this.room.game.cameras[0].pos.y) - thrownPos;
-
-                this.aimDir = Custom.DirVec(this.grabbedBy[0].grabber.mainBodyChunk.pos, vector + recoilaimDir);
-
                 if (this.grabbedBy[0].grabber is Player)
                 {
+
+                    Vector2 vector = new Vector2(Input.mousePosition.x + this.room.game.cameras[0].pos.x, Input.mousePosition.y + this.room.game.cameras[0].pos.y) - thrownPos;
+
                     Player player = (this.grabbedBy[0].grabber as Player);
                     Vector2 vector2 = new Vector2(player.mainBodyChunk.pos.x + (this.aimDir.x * 50), player.mainBodyChunk.pos.y + (this.aimDir.y * 50));
                     int otherGrasp;
+
+                    if (GunOptions.UsesMouseAim.Value)
+                    {
+                        this.aimDir = Custom.DirVec(this.grabbedBy[0].grabber.mainBodyChunk.pos, vector + recoilaimDir);
+                    }
+                    else
+                    {
+
+                        if (player.input[0].analogueDir.x != 0)
+                        {
+                            this.aimDir.x = player.input[0].analogueDir.x;
+                        }
+
+                        this.aimDir.y = player.input[0].analogueDir.y;
+
+                        if (player.input[0].analogueDir.y != 0)
+                        {
+                            if (player.input[0].analogueDir.x == 0)
+                            {
+                                this.aimDir.x = 0;
+                            }
+                        }
+
+
+                    }
 
                     if (this.grabbedBy[0].graspUsed == 0)
                     {
@@ -225,7 +249,7 @@ namespace GunTest
                     {
                         if (Time.time - this.lastFire >= (60f/ this.RPM))
                         {
-                            this.Shoot(player, eu);
+                            this.Shoot(player, this.bodyChunks[1].pos, eu);
                         }
                     }
 
@@ -241,17 +265,42 @@ namespace GunTest
             base.Update(eu);
         }
 
-        public AbstractPhysicalObject GetBullet()
+        public virtual Weapon GetBullet(Vector2 pos)
         {
-            AbstractPhysicalObject bullet = new BulletProjectile.BulletProjectileAbstract(this.room.world, this.room.GetWorldCoordinate(thrownPos), this.room.game.GetNewID())
+
+            AbstractPhysicalObject bullet = new BulletProjectile.BulletProjectileAbstract(this.room.world, this.room.GetWorldCoordinate(pos), this.room.game.GetNewID());
+
+            if (GunOptions.DemomanMode.Value)
             {
+                bullet = new AbstractPhysicalObject(this.room.world, AbstractPhysicalObject.AbstractObjectType.ScavengerBomb, null, this.room.GetWorldCoordinate(pos), this.room.game.GetNewID());
+            }
 
-            };
+            this.room.abstractRoom.AddEntity(bullet);
+            bullet.RealizeInRoom();
 
-            return bullet;
+            Weapon tehbullet = (bullet.realizedObject as Weapon);
+
+            return tehbullet;
         }
 
-        public void Shoot(Creature thrownBy, bool eu)
+        public virtual void DoShitToTheBulletAfterFiring(Weapon bullet)
+        {
+            //Actually Doesn't Do Shit, You need to create what this does lol
+
+            if (GunOptions.DemomanMode.Value)
+            {
+
+                if (bullet is ScavengerBomb)
+                {
+                    (bullet as ScavengerBomb).ignited = true;
+                    (bullet as ScavengerBomb).InitiateBurn();
+                }
+
+            }
+
+        }
+
+        public void Shoot(Creature thrownBy, Vector2 ThrowPos, bool eu)
         {
             if (this.ammo == 0 | this.reloading > 0.1f | Time.time - this.lastFire < (60f/this.RPM))
             {
@@ -263,27 +312,41 @@ namespace GunTest
             else
             {
 
-                Vector2 gunRecoil = this.aimDir * recoil;
-                for (int i = 1; i <= bullets; i++)
+                Vector2 gunRecoil = this.aimDir * recoil * GunOptions.RecoilMultiplyer.Value;
+                
+                if (!GunOptions.ToyGunMode.Value)
                 {
+                    for (int i = 1; i <= bullets; i++)
+                    {
 
-                    Vector2 fireDir = (this.aimDir * 2) + (new Vector2(UnityEngine.Random.Range(-this.spread, this.spread), UnityEngine.Random.Range(-this.spread, this.spread)));
+                        Vector2 fireDir = (this.aimDir * 2) + (new Vector2(UnityEngine.Random.Range(-this.spread, this.spread), UnityEngine.Random.Range(-this.spread, this.spread)));
 
-                    AbstractPhysicalObject bullet = GetBullet();
+                        Creature shotBy = this.grabbedBy[0].grabber;
 
-                    this.room.abstractRoom.AddEntity(bullet);
-                    bullet.RealizeInRoom();
+                        Vector2 firePos = this.firstChunk.pos + (this.aimDir * 5);
 
-                    Creature shotBy = this.grabbedBy[0].grabber;
+                        Weapon tehbullet = GetBullet(ThrowPos);
 
-                    Vector2 firePos = this.firstChunk.pos + (this.aimDir * 5);
+                        if (tehbullet is BulletProjectile.BulletProjectile)
+                        {
+                            (tehbullet as BulletProjectile.BulletProjectile).damage = this.bulletdamage;
+                            if (GunOptions.RealGunMode.Value)
+                            {
+                                (tehbullet as BulletProjectile.BulletProjectile).damage *= 185;
+                            }
+                        }
 
-                    (bullet.realizedObject as BulletProjectile.BulletProjectile).damage = this.bulletdamage;
-                    (bullet.realizedObject as BulletProjectile.BulletProjectile).setPosAndTail(firePos);
-                    (bullet.realizedObject as BulletProjectile.BulletProjectile).Shoot(shotBy, firePos, fireDir, 1.5f, eu);
-                    (bullet.realizedObject as BulletProjectile.BulletProjectile).changeDirCounter = 0;
-                    this.room.AddObject(new Spark(firePos, Custom.RNV(), Color.white, null, 40, 60));
 
+
+                        this.room.AddObject(tehbullet);
+
+                        tehbullet.Shoot(shotBy, firePos, fireDir, 1.25f, eu);
+                        tehbullet.changeDirCounter = 0;
+                        tehbullet.setPosAndTail(firePos);
+                        this.DoShitToTheBulletAfterFiring(tehbullet);
+                        this.room.AddObject(new Spark(firePos, Custom.RNV(), Color.white, null, 40, 60));
+
+                    }
                 }
 
                 thrownBy.mainBodyChunk.vel -= gunRecoil;
@@ -302,7 +365,10 @@ namespace GunTest
                     this.bodyChunks[0].vel = gunRecoil;
                 }
 
-                this.recoilpunish += this.recoilpunishamount;
+                if (GunOptions.SufferRecoilPunish.Value)
+                {
+                    this.recoilpunish += this.recoilpunishamount;
+                }
 
                 this.lastFire = Time.time;
 
@@ -312,7 +378,7 @@ namespace GunTest
         public override void Thrown(Creature thrownBy, Vector2 thrownPos, Vector2? firstFrameTraceFromPos, IntVector2 throwDir, float frc, bool eu)
         {
 
-            this.Shoot(thrownBy, eu);
+            this.Shoot(thrownBy, this.bodyChunks[1].pos, eu);
 
             //base.Thrown(thrownBy, thrownPos, firstFrameTraceFromPos, throwDir, frc, eu);
         }
@@ -333,9 +399,11 @@ namespace GunTest
         public float recoilpunishamount = 1.5f;
         public bool twohanded = true;
         public SoundID FireID = SoundID.Firecracker_Bang;
+        public SoundID ReloadClickID = SoundID.Spear_Bounce_Off_Creauture_Shell;
         public Vector2 recoilPattern = new Vector2(0, 1f);
         public int RPM = 500;
         public float lastFire = Time.time;
+        public int RealSprites = 1;
         public float sprSize = 2;
 
         public virtual bool IsObjectVaild(PhysicalObject Obj)

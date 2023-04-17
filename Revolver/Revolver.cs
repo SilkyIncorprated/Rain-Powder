@@ -39,12 +39,13 @@ namespace GunTest.RevolverStuff
             this.twohanded = false;
             this.recoilpunishamount = 0.9f;
             this.RPM = 475;
+            this.RealSprites = 1;
 
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-            sLeaser.sprites = new FSprite[1 + this.Maxammo];
+            sLeaser.sprites = new FSprite[this.RealSprites + this.Maxammo];
 
             sLeaser.sprites[0] = new FSprite("Revolver_NormalState");
 

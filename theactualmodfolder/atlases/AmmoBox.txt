@@ -1,0 +1,20 @@
+{"frames": {
+
+"AmmoBox.png":
+{
+	"frame": {"x":0,"y":0,"w":66,"h":52},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":66,"h":52},
+	"sourceSize": {"w":66,"h":52}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "AmmoBox.png",
+	"format": "RGBA8888",
+	"size": {"w":66,"h":52},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:3ce99890be8df54f148a222013a9c178:c655ace7eb424af74a647181f7eab90b:6c8b3766cf5277180e52c53f785af990$"
+}
+}

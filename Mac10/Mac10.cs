@@ -33,11 +33,11 @@ namespace GunTest.Mac10
 
             this.Maxammo = 30;
             this.ammo = 30;
-            this.recoil = 14.5f;
+            this.recoil = 3.5f;
             this.reloadTime = 2.25f;
-            this.bulletdamage = 1f;
+            this.bulletdamage = 0.45f;
             this.twohanded = false;
-            this.recoilpunishamount = 0.45f;
+            this.recoilpunishamount = 0.15f;
             this.spread = .05f;
             this.auto = true;
             this.sprSize = 2.5f;

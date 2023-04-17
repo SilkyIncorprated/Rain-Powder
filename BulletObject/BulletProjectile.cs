@@ -48,7 +48,7 @@ namespace GunTest.BulletProjectile
             }
 
             airFriction = 1f;
-            gravity = 0.9f;
+            gravity = 0.95f;
             bounce = 0f;
             surfaceFriction = 0f;
             collisionLayer = 2;
@@ -92,17 +92,20 @@ namespace GunTest.BulletProjectile
             sLeaser.sprites[0].y = vector.y - camPos.y;
             Vector3 v = Vector3.Slerp(this.lastRotation, this.rotation, timeStacker);
             sLeaser.sprites[0].rotation = Custom.AimFromOneVectorToAnother(new Vector2(0f, 0f), v);
-            sLeaser.sprites[1].isVisible = true;
+            
             Vector2 vector2 = Vector2.Lerp(this.tailPos, base.firstChunk.lastPos, timeStacker);
             Vector2 a = Custom.PerpendicularVector((vector - vector2).normalized);
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(0, vector + a * 2f - camPos);
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(1, vector - a * 2f - camPos);
             (sLeaser.sprites[1] as TriangleMesh).MoveVertice(2, vector2 - camPos);
+            sLeaser.sprites[1].isVisible = true;
             if (base.slatedForDeletetion || this.room != rCam.room)
             {
                 sLeaser.CleanSpritesAndRemove();
             }
         }
+
+        
 
         public override void HitWall()
         {
@@ -151,8 +154,6 @@ namespace GunTest.BulletProjectile
                 BodyChunk firstChunk = base.firstChunk;
                 (result.obj as Creature).Violence(firstChunk, new Vector2?(base.firstChunk.vel * base.firstChunk.mass * 3), result.chunk, result.onAppendagePos, Creature.DamageType.Stab, this.damage, 15);
             }
-
-            this.Destroy();
 
             return true;
         }

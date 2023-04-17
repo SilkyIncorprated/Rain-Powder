@@ -10,10 +10,9 @@ using RWCustom;
 using UnityEngine;
 using MonoMod;
 using System.Collections;
-
 namespace GunTest
 {
-    [BepInPlugin("silky.gunworld", "Rain Powder", "1.0.0")]
+    [BepInPlugin("silky.gunworld", "Rain Powder", "1.2.1")]
     public class Plugin : BaseUnityPlugin
     {
 
@@ -41,6 +40,9 @@ namespace GunTest
             Futile.atlasManager.LoadAtlas("atlases/HuntingRifle");
             Futile.atlasManager.LoadAtlas("atlases/Shotgun");
             Futile.atlasManager.LoadAtlas("atlases/Mac10");
+            Futile.atlasManager.LoadAtlas("atlases/AmmoBox");
+
+            MachineConnector.SetRegisteredOI("silky.gunworld", new GunOptions());
 
             On.Player.ThrowObject += Player_ThrowObject;
 
@@ -53,34 +55,20 @@ namespace GunTest
             try
             {
 
-                if (self.grasps[0].grabbed is GunClass)
+                if (self.grasps[grasp].grabbed is GunClass)
                 {
 
-                    GunClass gun = (self.grasps[0].grabbed as GunClass);
+                    GunClass gun = (self.grasps[grasp].grabbed as GunClass);
 
-              
+                    int othergrasp = 0;
 
-                    if (gun.ammo == 0)
+                    if (grasp == 0)
                     {
-                        if (gun.reloading <= 0)
-                        {
-                            if (self.grasps[1].grabbed != null && gun.IsObjectVaild(self.grasps[1].grabbed))
-                            {
-                                Spear tehrock = self.grasps[1].grabbed as Spear;
-                                BodyChunk mainBodyChunk = self.mainBodyChunk;
-                                mainBodyChunk.vel.y = mainBodyChunk.vel.y + 4f;
-                                self.room.PlaySound(SoundID.Gate_Clamp_Lock, self.mainBodyChunk, false, 0.5f, 3f + UnityEngine.Random.value);
-                                AbstractPhysicalObject abstractPhysicalObject = self.grasps[1].grabbed.abstractPhysicalObject;
-                                self.ReleaseGrasp(1);
-                                abstractPhysicalObject.realizedObject.RemoveFromRoom();
-                                abstractPhysicalObject.Room.RemoveEntity(abstractPhysicalObject);
-                                StartCoroutine(GunReload(gun));
-                            }
-                            else
-                            {
-                                gun.room.PlaySound(SoundID.Gate_Bolt, gun.bodyChunks[0], false, 0.5f, 6.5f);
-                            }
-                        }
+                        othergrasp = 1;
+                    }
+                    else
+                    {
+                        othergrasp = 0;
                     }
 
                     IntVector2 intVector = new IntVector2(self.ThrowDirection, 0);
@@ -90,7 +78,32 @@ namespace GunTest
                         vector = self.mainBodyChunk.pos;
                     }
 
-                    gun.Thrown(self, vector, new Vector2?(self.mainBodyChunk.pos - intVector.ToVector2() * 10f), intVector, Mathf.Lerp(1f, 1.5f, self.Adrenaline), eu);
+                    if (gun.ammo <= 0)
+                    {
+                        if (gun.reloading <= 0)
+                        {
+                            if (self.grasps[othergrasp].grabbed != null && gun.IsObjectVaild(self.grasps[othergrasp].grabbed))
+                            {
+                                Weapon tehrock = self.grasps[othergrasp].grabbed as Weapon;
+                                BodyChunk mainBodyChunk = self.mainBodyChunk;
+                                mainBodyChunk.vel.y = mainBodyChunk.vel.y + 4f;
+                                self.room.PlaySound(SoundID.Gate_Clamp_Lock, self.mainBodyChunk, false, 0.5f, 3f + UnityEngine.Random.value);
+                                AbstractPhysicalObject abstractPhysicalObject = self.grasps[othergrasp].grabbed.abstractPhysicalObject;
+                                self.ReleaseGrasp(1);
+                                abstractPhysicalObject.realizedObject.RemoveFromRoom();
+                                abstractPhysicalObject.Room.RemoveEntity(abstractPhysicalObject);
+                                StartCoroutine(GunReload(gun));
+                            }
+                            else if (self.grasps[othergrasp].grabbed == null | !gun.IsObjectVaild(self.grasps[othergrasp].grabbed))
+                            {
+                                gun.Thrown(self, vector, new Vector2?(self.mainBodyChunk.pos - intVector.ToVector2() * 10f), intVector, Mathf.Lerp(1f, 1.5f, self.Adrenaline), eu);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        gun.Thrown(self, vector, new Vector2?(self.mainBodyChunk.pos - intVector.ToVector2() * 10f), intVector, Mathf.Lerp(1f, 1.5f, self.Adrenaline), eu);
+                    }
 
                 }
                 else
@@ -121,7 +134,7 @@ namespace GunTest
 
             BodyChunk mainBodyChunk = gun.grabbedBy[0].grabber.mainBodyChunk;
             mainBodyChunk.vel.y = mainBodyChunk.vel.y + 4f;
-            gun.room.PlaySound(SoundID.Spear_Bounce_Off_Creauture_Shell, gun.firstChunk, false, 0.5f, 8f + UnityEngine.Random.value);
+            gun.room.PlaySound(gun.ReloadClickID, gun.firstChunk);
 
         }
 
