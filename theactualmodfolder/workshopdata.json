@@ -2,7 +2,7 @@
   "Title": "Rain Powder",
   "Description": "Not actual rain, its actually a gun!\r\n\r\nthanks to b1g ideas shoe from the RW discord for drawing the last thumbnail! (sorry)\r\n\r\nNOTE: guns do not spawn naturally\r\nuse dev console to spawn them in lol\r\n\r\nteh new update:\r\n-Options, also now no more mouse aiming on default",
   "ID": "silky.gunworld",
-  "Version": "0.2.1",
+  "Version": "0.2.2",
   "TargetGameVersion": "v1.9.06",
   "Requirements": "fisobs",
   "RequirementNames": "Fisobs",
