@@ -48,7 +48,7 @@ namespace GunTest.BulletProjectile
             }
 
             airFriction = 1f;
-            gravity = 0.95f;
+            gravity = 1f;
             bounce = 0f;
             surfaceFriction = 0f;
             collisionLayer = 2;
