@@ -40,30 +40,41 @@ namespace GunTest.Rifle
             this.ammo = 4;
             this.bulletdamage = 2.25f;
             this.recoil = 9.5f;
-            this.reloadTime = 2.75f;
+            this.reloadTime = 48;
             this.recoilpunishamount = 1.1f;
             this.recoilPattern = new Vector2(0, 2);
             this.RPM = 400;
+            this.RealSprites = 2;
 
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-            sLeaser.sprites = new FSprite[1 + this.Maxammo];
+            base.InitiateSprites(sLeaser, rCam);
 
             sLeaser.sprites[0] = new FSprite("HuntingRifle_NormalState");
-
-            for (int x = 1; x < sLeaser.sprites.Length; x++)
-            {
-                sLeaser.sprites[x] = new FSprite("Circle20");
-                sLeaser.sprites[x].y = 8f;
-                sLeaser.sprites[x].x = 25f * (this.Maxammo - Mathf.Round(this.Maxammo/2));
-            }
-
-            AddToContainer(sLeaser, rCam, null);
+            sLeaser.sprites[1] = new FSprite("HuntingRifle_ReloadingState");
         }
 
+        public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        {
+            base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
+            sLeaser.sprites[1].rotation = sLeaser.sprites[0].rotation;
+
+            if (this.reloading > 0)
+            {
+                sLeaser.sprites[0].isVisible = false;
+                sLeaser.sprites[1].isVisible = true;
+            }
+            else
+            {
+                sLeaser.sprites[0].isVisible = true;
+                sLeaser.sprites[1].isVisible = false;
+            }
+
+
+        }
 
     }
 }

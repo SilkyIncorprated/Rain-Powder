@@ -92,7 +92,8 @@ namespace GunTest
                                 self.ReleaseGrasp(1);
                                 abstractPhysicalObject.realizedObject.RemoveFromRoom();
                                 abstractPhysicalObject.Room.RemoveEntity(abstractPhysicalObject);
-                                StartCoroutine(GunReload(gun));
+                                gun.room.PlaySound(SoundID.Gate_Clamp_Lock, gun.firstChunk, false, 1, 3.5f + UnityEngine.Random.value);
+                                gun.reloading = gun.reloadTime;
                             }
                             else if (self.grasps[othergrasp].grabbed == null | !gun.IsObjectVaild(self.grasps[othergrasp].grabbed))
                             {
@@ -115,27 +116,6 @@ namespace GunTest
             {
                 Logger.LogWarning(ex);
             }
-        }
-
-        IEnumerator GunReload(GunClass gun, float reloadMult = 1f, int AmmoFill = -1)
-        {
-
-            if (AmmoFill == -1)
-            {
-                AmmoFill = gun.Maxammo;
-            }
-
-            gun.reloading = 1f;
-
-            yield return new WaitForSecondsRealtime(gun.reloadTime* reloadMult);
-
-            gun.reloading = 0f;
-            gun.ammo = AmmoFill;
-
-            BodyChunk mainBodyChunk = gun.grabbedBy[0].grabber.mainBodyChunk;
-            mainBodyChunk.vel.y = mainBodyChunk.vel.y + 4f;
-            gun.room.PlaySound(gun.ReloadClickID, gun.firstChunk);
-
         }
 
     }

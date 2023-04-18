@@ -48,7 +48,7 @@ namespace GunTest.BulletProjectile
             }
 
             airFriction = 1f;
-            gravity = 1f;
+            gravity = .5f;
             bounce = 0f;
             surfaceFriction = 0f;
             collisionLayer = 2;
@@ -140,7 +140,7 @@ namespace GunTest.BulletProjectile
             {
                 return false;
             }
-            if (result.obj is Player)
+            if (result.obj == this.thrownBy)
             {
                 return false;
             }
@@ -152,7 +152,7 @@ namespace GunTest.BulletProjectile
             if (result.obj is Creature)
             {
                 BodyChunk firstChunk = base.firstChunk;
-                (result.obj as Creature).Violence(firstChunk, new Vector2?(base.firstChunk.vel * base.firstChunk.mass * 3), result.chunk, result.onAppendagePos, Creature.DamageType.Stab, this.damage, 15);
+                (result.obj as Creature).Violence(firstChunk, new Vector2?(base.firstChunk.vel * base.firstChunk.mass * this.damage), result.chunk, result.onAppendagePos, Creature.DamageType.Stab, this.damage, 15);
             }
 
             return true;

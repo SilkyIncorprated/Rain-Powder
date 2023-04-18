@@ -84,6 +84,13 @@ namespace GunTest
             for (int x = 1; x < sLeaser.sprites.Length; x++)
             {
                 sLeaser.sprites[x] = new FSprite("Circle20");
+
+                if (GunOptions.AmmoCounterSytle.Value == "Boxes")
+                {
+                    sLeaser.sprites[x] = new FSprite("Futile_White");
+                    this.ammocountersize = 1.5f;
+                }
+
                 sLeaser.sprites[x].y = 8f;
                 sLeaser.sprites[x].x = 25f * (this.Maxammo - Mathf.Round(this.Maxammo / 2));
             }
@@ -98,13 +105,16 @@ namespace GunTest
             gunspr.SetPosition(Vector2.Lerp(bodyChunks[0].lastPos, bodyChunks[0].pos, timeStacker) - camPos);
             //gunspr.anchorX = 1f/100000;
             gunspr.scale = size;
+
+            // The Ammo Counter stuff
             for (int i = this.RealSprites; i < sLeaser.sprites.Length; i++)
             {
                 var spr = sLeaser.sprites[i];
 
                 if (this.grabbedBy.Count > 0)
                 {
-                    if (this.grabbedBy[0].grabber is Player)
+
+                    if (this.grabbedBy[0].grabber is Player && GunOptions.AmmoCounterSytle.Value != "None")
                     {
                         spr.isVisible = true;
                         spr.SetPosition(Vector2.Lerp(this.grabbedBy[0].grabber.mainBodyChunk.lastPos, this.grabbedBy[0].grabber.mainBodyChunk.pos, timeStacker) - camPos);
@@ -123,12 +133,12 @@ namespace GunTest
 
                 if (i > this.ammo)
                 {
-                    spr.scale = Mathf.Lerp(spr.scale, .125f, Time.deltaTime*25);
+                    spr.scale = Mathf.Lerp(spr.scale, .125f * this.ammocountersize, Time.deltaTime*25);
                     spr.color = Color.gray;
                 }
                 else
                 {
-                    spr.scale = Mathf.Lerp(spr.scale, .25f, Time.deltaTime * 25);
+                    spr.scale = Mathf.Lerp(spr.scale, .25f * this.ammocountersize, Time.deltaTime * 25);
                     spr.color = Color.white;
                 }
 
@@ -187,19 +197,10 @@ namespace GunTest
                     else
                     {
 
-                        if (player.input[0].analogueDir.x != 0)
+                        if (player.input[0].analogueDir.x != 0 | player.input[0].analogueDir.y != 0)
                         {
                             this.aimDir.x = player.input[0].analogueDir.x;
-                        }
-
-                        this.aimDir.y = player.input[0].analogueDir.y;
-
-                        if (player.input[0].analogueDir.y != 0)
-                        {
-                            if (player.input[0].analogueDir.x == 0)
-                            {
-                                this.aimDir.x = 0;
-                            }
+                            this.aimDir.y = player.input[0].analogueDir.y;
                         }
 
 
@@ -262,9 +263,22 @@ namespace GunTest
                 this.recoilpunish -= Time.deltaTime;
             }
 
+
+            if (this.reloading == 1)
+            {
+                this.ammo = this.Maxammo;
+                this.room.PlaySound(this.ReloadClickID, this.firstChunk, false, 1, 5f + UnityEngine.Random.value);
+            }
+
+            if (this.reloading > 0)
+            {
+                this.reloading--;
+            }
+
             base.Update(eu);
         }
 
+        // how i got custom bullets to work lol
         public virtual Weapon GetBullet(Vector2 pos)
         {
 
@@ -300,9 +314,10 @@ namespace GunTest
 
         }
 
+        // how the gun shoots
         public void Shoot(Creature thrownBy, Vector2 ThrowPos, bool eu)
         {
-            if (this.ammo == 0 | this.reloading > 0.1f | Time.time - this.lastFire < (60f/this.RPM))
+            if (this.ammo == 0 | this.reloading > 0 | Time.time - this.lastFire < (60f/this.RPM))
             {
                 if (!(Time.time - this.lastFire < (60f / this.RPM)))
                 {
@@ -375,6 +390,7 @@ namespace GunTest
             }
         }
 
+        // force the gun to shoot
         public override void Thrown(Creature thrownBy, Vector2 thrownPos, Vector2? firstFrameTraceFromPos, IntVector2 throwDir, float frc, bool eu)
         {
 
@@ -383,33 +399,36 @@ namespace GunTest
             //base.Thrown(thrownBy, thrownPos, firstFrameTraceFromPos, throwDir, frc, eu);
         }
 
-        public float recoil = 5f;
-        public bool auto = false;
+        public float recoil = 5f; // how much it pushes/shoves the amercain
+        public bool auto = false; // if it firing automaticlly
         public Vector2 aimDir;
         public Vector2 recoilaimDir = new Vector2(0, 0);
-        public float reloading = 0;
-        public float reloadTime = 1f;
-        public int ammo = 30;
-        public int Maxammo = 30;
-        public float bulletdamage = 1f;
-        public float spread = 0f;
-        public int bullets = 1;
-        public float recoilpunish = 0;
-        public float recoilthreshold = 3;
-        public float recoilpunishamount = 1.5f;
-        public bool twohanded = true;
-        public SoundID FireID = SoundID.Firecracker_Bang;
-        public SoundID ReloadClickID = SoundID.Spear_Bounce_Off_Creauture_Shell;
-        public Vector2 recoilPattern = new Vector2(0, 1f);
-        public int RPM = 500;
-        public float lastFire = Time.time;
+        public int reloading = 0; // teh reload time
+        public int reloadTime = 10; // how long it takes
+        public int ammo = 30; // ammo
+        public int Maxammo = 30; // what it will be reloaded to
+        public float bulletdamage = 1f; // yknow... DAMAGE?
+        public float spread = 0f; // i recommend using .3f for 3 degrees
+        public int bullets = 1; // shotgunnnn
+        public float recoilpunish = 0; // the amount of punish you taken
+        public float recoilthreshold = 3; // the threshold before the breaking point
+        public float recoilpunishamount = 1.5f; // how much punish you gain
+        public bool twohanded = true; // if the slug boy holds it with 2 hands
+        public SoundID FireID = SoundID.Firecracker_Bang; // the BOOM sound
+        public SoundID ReloadClickID = SoundID.Spear_Bounce_Off_Creauture_Shell; // the CLICK sound
+        public Vector2 recoilPattern = new Vector2(0, 1f); // ignore this for now
+        public int RPM = 500; // how many bullets you could fire in a minute
+        public float lastFire = Time.time; // cooldown
         public int RealSprites = 1;
-        public float sprSize = 2;
+        public float sprSize = 2; // the size of your gun
+        private float ammocountersize = 1f; // trolololol
 
         public virtual bool IsObjectVaild(PhysicalObject Obj)
         {
             return (Obj is Rock);
         }
+
+        //reload!!!
 
     }
 }

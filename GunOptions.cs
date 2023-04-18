@@ -13,6 +13,7 @@ namespace GunTest
 		{
 			GunOptions.UsesMouseAim = this.config.Bind<bool>("usemouseaimoption", false, info: null);
 			GunOptions.SufferRecoilPunish = this.config.Bind<bool>("gunrecoilpunishtoggle", true, info: null);
+			GunOptions.AmmoCounterSytle = this.config.Bind<string>("gunammocounterstyle", "Circles", info: null);
 
 			// Funnys
 
@@ -46,7 +47,15 @@ namespace GunTest
 			};
 
 			OpCheckBox opMouseAim = new OpCheckBox(GunOptions.UsesMouseAim, new Vector2(15f, 530f));
-			OpCheckBox opGunPunishToggle = new OpCheckBox(GunOptions.SufferRecoilPunish, new Vector2(15f, 450f));
+			OpComboBox opStyleAmmo = new OpComboBox(GunOptions.AmmoCounterSytle, new Vector2(15f, 450f), 60f, new List<ListItem>
+			{
+			
+				new ListItem("Circles"),
+				new ListItem("Boxes"),
+				new ListItem("None")
+
+			});
+			OpCheckBox opGunPunishToggle = new OpCheckBox(GunOptions.SufferRecoilPunish, new Vector2(15f, 490f));
 			this.Tabs[0].AddItems(new UIelement[]
 			{
 				opMouseAim,
@@ -56,10 +65,16 @@ namespace GunTest
 					description = GunOptions.BPTranslate("If the guns uses the mosue to aim.")
 				},
 				opGunPunishToggle,
-				new OpLabel(45f, 450f, GunOptions.BPTranslate("Suffer Recoil"), false)
+				new OpLabel(45f, 490f, GunOptions.BPTranslate("Suffer Recoil"), false)
 				{
 					bumpBehav = opGunPunishToggle.bumpBehav,
 					description = GunOptions.BPTranslate("Toggle being stunned by firing too much.")
+				},
+				opStyleAmmo,
+				new OpLabel(45f + 60f, 450f, GunOptions.BPTranslate("Ammo counter style"), false)
+				{
+					bumpBehav = opStyleAmmo.bumpBehav,
+					description = GunOptions.BPTranslate("How the guns ammo is shown.")
 				}
 			});
 
@@ -104,6 +119,7 @@ namespace GunTest
 		}
 
         public static Configurable<bool> UsesMouseAim;
+		public static Configurable<string> AmmoCounterSytle;
 		public static Configurable<bool> RealGunMode;
 		public static Configurable<float> RecoilMultiplyer;
 		public static Configurable<bool> SufferRecoilPunish;

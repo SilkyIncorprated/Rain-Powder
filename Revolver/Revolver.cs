@@ -34,7 +34,7 @@ namespace GunTest.RevolverStuff
             this.Maxammo = 6;
             this.ammo = 6;
             this.recoil = 13.5f;
-            this.reloadTime = 2f;
+            this.reloadTime = 40;
             this.bulletdamage = 1.5f;
             this.twohanded = false;
             this.recoilpunishamount = 0.9f;

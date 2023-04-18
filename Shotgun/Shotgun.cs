@@ -39,7 +39,7 @@ namespace GunTest.Shotgun
             this.Maxammo = 2;
             this.ammo = 2;
             this.recoil = 30f;
-            this.reloadTime = 3f;
+            this.reloadTime = 60;
             this.bullets = 10;
             this.bulletdamage = .6f;
             this.FireID = SoundID.Bomb_Explode;
